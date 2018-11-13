@@ -47,26 +47,32 @@
       <sonar:description rel="xslt-quality_avoid-for-each">TODO description</sonar:description>
       <report test="ancestor::xsl:template          and not(starts-with(@select, '$'))         and not(starts-with(@select, 'tokenize('))         and not(starts-with(@select, 'distinct-values('))         and not(matches(@select, '\d'))"
         role="warning"
-        id="xslt-quality_avoid-for-each">
-        [common] Should you use xsl:apply-template instead of xsl:for-each 
+        id="xslt-quality_avoid-for-each"   
+        sonar:tags="xsl-common">
+        Consider using "&lt;xsl:apply-template &gt;" instead of "&lt;xsl:for-each &gt;"
       </report>
     </rule>
     <rule context="xsl:template/@match | xsl:*/@select | xsl:when/@test">
+      <!-- TODO type => bug ? -->
       <sonar:name rel="xslt-quality_use-resolve-uri-instead-of-concat">"resolve-uri()" should be used to resolve relatives URIs</sonar:name>
       <sonar:description rel="xslt-quality_use-resolve-uri-instead-of-concat">TODO description</sonar:description>
       <report test="contains(., 'document(concat(') or contains(., 'doc(concat(')"
-        id="xslt-quality_use-resolve-uri-instead-of-concat">
-        [common] Don't use concat within document() or doc() function, use resolve-uri instead (you may use static-base-uri() or base-uri())
+        id="xslt-quality_use-resolve-uri-instead-of-concat"   
+        sonar:tags="xsl-common">
+        Don't use concat within <value-of select="if (contains(.,'document(')) then 'document()' else 'doc()'"/> function, use resolve-uri instead. (you may use static-base-uri() or base-uri())
       </report>
     </rule>
   </pattern>
   
   <pattern id="xslt-quality_documentation">
     <rule context="/xsl:stylesheet">
+      <!-- TODO cf. Matthieu : rétrogradé en role="info" -->
       <sonar:name rel="xslt-quality_documentation-stylesheet">Stylesheet should be documented</sonar:name>
       <assert test="xd:doc[@scope = 'stylesheet']"
-        id="xslt-quality_documentation-stylesheet">
-        [documentation] Please add a documentation block for the whole stylesheet : &lt;xd:doc scope="stylesheet"&gt;
+        id="xslt-quality_documentation-stylesheet"
+        role="info"
+        sonar:tags="documentation">
+        Add a documentation block for the whole stylesheet : &lt;xd:doc scope="stylesheet"&gt;.
       </assert>
     </rule>
   </pattern>
@@ -77,21 +83,23 @@
       <sonar:description rel="xslt-quality_typing-with-as-attribute">TODO description (explicitely typed)</sonar:description>
       <assert test="@as"
         diagnostics="addType"
-        id="xslt-quality_typing-with-as-attribute">
-        [typing] <name/> is not typed
+        id="xslt-quality_typing-with-as-attribute"
+        sonar:tags="typing">
+        Provide an explicit type for the <name/> <value-of select="./@name"/>.
       </assert>
     </rule>
   </pattern>
   
   <pattern id="xslt-quality_namespaces">
     <rule context="xsl:template/@name | /*/xsl:variable/@name | /*/xsl:param/@name">
-      <sonar:name rel="xslt-quality_ns-global-statements-need-prefix">Namespaces declarations should be mapped to a prefix</sonar:name>
+      <sonar:name rel="xslt-quality_ns-global-statements-need-prefix">Global statements names should be prefixed</sonar:name>
       <sonar:description rel="xslt-quality_ns-global-statements-need-prefix">TODO description</sonar:description>
       <assert test="every $name in tokenize(., '\s+') satisfies matches($name, concat('^', $NCNAME.reg, ':'))"
         role="warning"
-        id="xslt-quality_ns-global-statements-need-prefix">
-        [namespaces] <value-of select="local-name(parent::*)"/> 
-        <name/>="<value-of select="tokenize(., '\s+')[not(matches(., concat('^', $NCNAME.reg, ':')))]"/>" should be namespaces prefixed, so they don't generate conflict with imported XSLT (or when this xslt is imported)
+        id="xslt-quality_ns-global-statements-need-prefix"
+        sonar:tags="namespaces">
+        Add a namespace prefix to <value-of select="local-name(parent::*)"/> 
+        <name/>="<value-of select="tokenize(., '\s+')[not(matches(., concat('^', $NCNAME.reg, ':')))]"/>" , so it doesn't generate conflict with imported XSLT. (or when this xslt is imported)
       </assert>
     </rule>
     <rule context="xsl:template/@mode">
@@ -99,16 +107,18 @@
       <sonar:description rel="xslt-quality_ns-mode-statements-need-prefix">TODO description</sonar:description>
       <assert test="every $name in tokenize(., '\s+') satisfies matches($name, concat('^', $NCNAME.reg, ':'))"
         role="warning"
-        id="xslt-quality_ns-mode-statements-need-prefix">
-        [namespaces] <value-of select="local-name(parent::*)"/> @<name/> value "<value-of select="tokenize(., '\s+')[not(matches(., concat('^', $NCNAME.reg, ':')))]"/>" should be namespaces prefixed, so they don't generate conflict with imported XSLT (or when this xslt is imported)
+        id="xslt-quality_ns-mode-statements-need-prefix"
+        sonar:tags="namespaces">
+        Add a namespace prefix to <value-of select="local-name(parent::*)"/> @<name/> value "<value-of select="tokenize(., '\s+')[not(matches(., concat('^', $NCNAME.reg, ':')))]"/>" , so it doesn't generate conflict with imported XSLT. (or when this xslt is imported)
       </assert>
     </rule>
     <rule context="@match | @select">
       <sonar:name rel="xslt-quality_ns-do-not-use-wildcard-prefix">Wildcard prefix should be avoided</sonar:name>
       <sonar:description rel="xslt-quality_ns-do-not-use-wildcard-prefix">TODO description</sonar:description>
       <report test="contains(., '*:')"
-        id="xslt-quality_ns-do-not-use-wildcard-prefix">
-        [namespaces] Use a namespace prefix instead of *:
+        id="xslt-quality_ns-do-not-use-wildcard-prefix"
+        sonar:tags="namespaces">
+        Use a namespace prefix instead of "*:".
       </report>
     </rule>
   </pattern>
@@ -119,8 +129,9 @@
       <sonar:name rel="xslt-quality_writing-use-select-attribute-when-possible">TODO xslt-quality_writing-use-select-attribute-when-possible</sonar:name>
       <sonar:description rel="xslt-quality_writing-use-select-attribute-when-possible">TODO description</sonar:description>
       <report id="xslt-quality_writing-use-select-attribute-when-possible"
+        sonar:tags="writing"
         test="not(@select) and (count(* | text()[normalize-space(.)]) = 1) and (count(xsl:value-of | xsl:sequence | text()[normalize-space(.)]) = 1)">
-        [writing] Use @select to assign a value to <name/>
+        Use "@select" to assign a value to <name/>
       </report>
     </rule>
   </pattern>
@@ -132,8 +143,9 @@
       <sonar:description rel="xslt-quality_xslt-3.0-import-first">TODO description</sonar:description>
       <report id="xslt-quality_xslt-3.0-import-first"
         test="following-sibling::xd:doc"
-        role="info">
-        [XSLT-3.0] When using XSLT 3.0 xsl:import may come after the xd:doc block
+        role="info"
+        sonar:tags="XSLT-3.0">
+        When using XSLT 3.0 xsl:import may come after the xd:doc block
       </report>
     </rule>
   </pattern>

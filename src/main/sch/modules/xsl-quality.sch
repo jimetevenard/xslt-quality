@@ -45,28 +45,28 @@ CHANGELOG :
   <pattern id="xslqual">
       <rule context="xsl:stylesheet">
          <sonar:name rel="xslqual-RedundantNamespaceDeclarations">Stylesheets should not have unused namespace declarations</sonar:name>
-         <assert id="xslqual-RedundantNamespaceDeclarations"
+         <assert id="xslqual-RedundantNamespaceDeclarations" sonar:tags="xslqual"
                  test="every $s in in-scope-prefixes(.)[not(. = ('xml', ''))] satisfies          exists(//(*[not(self::xsl:stylesheet)] | @*[not(parent::xsl:*)] | xsl:*/@select | xsl:*/@as | xsl:*/@name | xsl:*/@mode)         [starts-with(name(), concat($s, ':')) or starts-with(., concat($s, ':'))])"
                  role="warning">
         <!--[xslqual] There are redundant namespace declarations in the xsl:stylesheet element-->
-        [xslqual] There are namespace prefixes that are declared in the xsl:stylesheet element but never used anywhere 
+        There are namespace prefixes that are declared in the xsl:stylesheet element but never used anywhere 
       </assert>
          <sonar:name rel="xslqual-TooManySmallTemplates">Too many low-granular templates should be avoided</sonar:name>
          <sonar:description rel="xslqual-TooManySmallTemplates">TODO needs description !</sonar:description>
-         <report id="xslqual-TooManySmallTemplates"
+         <report id="xslqual-TooManySmallTemplates" sonar:tags="xslqual"
                  test="count(//xsl:template[@match and not(@name)][count(*) &lt; 3]) &gt;= 10"
                  role="info">
         [xslqual] Too many low granular templates in the stylesheet (10 or more)
       </report>
          <sonar:name rel="xslqual-MonolithicDesign">Stylesheets code should be modularized</sonar:name>
-         <report id="xslqual-MonolithicDesign"
+         <report id="xslqual-MonolithicDesign" sonar:tags="xslqual"
                  test="count(//xsl:template | //xsl:function) = 1"
                  role="warning">
         [xslqual] Using a single template/function in the stylesheet. You can modularize the code.
       </report>
          <sonar:name rel="xslqual-NotUsingSchemaTypes">Built-in XSD types should be used</sonar:name>
          <sonar:description rel="xslqual-NotUsingSchemaTypes">TODO needs description !</sonar:description>
-         <report id="xslqual-NotUsingSchemaTypes"
+         <report id="xslqual-NotUsingSchemaTypes" sonar:tags="xslqual"
                  test="(@version = ('2.0', '3.0')) and not(some $x in .//@* satisfies contains($x, 'xs:'))"
                  role="info">
         [xslqual] The stylesheet is not using any of the built-in Schema types (xs:string etc.), when working in XSLT <value-of select="@version"/> mode
@@ -75,55 +75,56 @@ CHANGELOG :
       <rule context="xsl:output">
          <sonar:name rel="xslqual-OutputMethodXml">"html" output method should be used when generating HTML code</sonar:name>
          <sonar:description rel="xslqual-OutputMethodXml">TODO needs description !</sonar:description>
-         <report id="xslqual-OutputMethodXml"
+         <report id="xslqual-OutputMethodXml" sonar:tags="xslqual"
                  test="(@method = 'xml') and starts-with(//xsl:template[.//html or .//HTML]/@match, '/')">
-        [xslqual] Using the output method 'xml' when generating HTML code
+        Use output method 'html' instead of 'xml' when generating HTML code
       </report>
       </rule>
       <rule context="xsl:variable">
+         <!-- TODO merge with xslqual-SettingValueOfParamIncorrectly -->
          <sonar:name rel="xslqual-SettingValueOfVariableIncorrectly">"@select" ashould be prefered to "xsl:value-of" or "xsl:sequence" to assign a variable</sonar:name>
          <sonar:description rel="xslqual-SettingValueOfVariableIncorrectly">TODO needs description !</sonar:description>
-         <report id="xslqual-SettingValueOfVariableIncorrectly"
+         <report id="xslqual-SettingValueOfVariableIncorrectly" sonar:tags="xslqual"
                  test="(count(*) = 1) and (count(xsl:value-of | xsl:sequence) = 1) and (normalize-space(string-join(text(), '')) = '')">
-        [xslqual] Assign value to a variable using the 'select' syntax if assigning a value with xsl:value-of (or xsl:sequence)
+            Assign value to the variable $<value-of select="@name"/> using the 'select' syntax if assigning a value with xsl:value-of (or xsl:sequence)
       </report>
          <sonar:name rel="xslqual-UnusedVariable">Unused variables should be avoided</sonar:name>
-         <assert id="xslqual-UnusedVariable"
+         <assert id="xslqual-UnusedVariable" sonar:tags="xslqual"
                  role="warning"
                  test="xslq:var-or-param-is-referenced-within-its-scope(.)">
-        [xslqual] Variable $<value-of select="@name"/> is unused within its scope
+        Variable $<value-of select="@name"/> is unused within its scope
       </assert>
       </rule>
       <rule context="xsl:param">
          <sonar:name rel="xslqual-SettingValueOfParamIncorrectly">"@select" should be prefered to "xsl:value-of" or "xsl:sequence" to assign a param</sonar:name>
          <sonar:description rel="xslqual-SettingValueOfParamIncorrectly">TODO needs description !</sonar:description>
-         <report id="xslqual-SettingValueOfParamIncorrectly"
+         <report id="xslqual-SettingValueOfParamIncorrectly" sonar:tags="xslqual"
                  role="warning"
                  test="(count(*) = 1) and (count(xsl:value-of | xsl:sequence) = 1)  and (normalize-space(string-join(text(), '')) = '')">
-        [xslqual] Assign value to a parameter using the 'select' syntax if assigning a value with xsl:value-of (or xsl:sequence)
+         Assign value to the parameter $<value-of select="@name"/> using the 'select' syntax if assigning a value with xsl:value-of (or xsl:sequence)
       </report>
          <sonar:name rel="xslqual-UnusedParameter">Unused parameters should be avoided</sonar:name>
-         <assert id="xslqual-UnusedParameter"
+         <assert id="xslqual-UnusedParameter" sonar:tags="xslqual"
                  role="warning"
                  test="xslq:var-or-param-is-referenced-within-its-scope(.)">
-        [xslqual] Parameter $<value-of select="@name"/> is unused within its scope
+        Parameter $<value-of select="@name"/> is unused within its scope
       </assert>
       </rule>
       <rule context="xsl:for-each | xsl:if | xsl:when | xsl:otherwise">
          <sonar:name rel="xslqual-EmptyContentInInstructions">Loops and conditionnal structures should not be empty</sonar:name>
-         <report id="xslqual-EmptyContentInInstructions"
+         <report id="xslqual-EmptyContentInInstructions" sonar:tags="xslqual"
                  role="warning"
                  test="(count(node()) = count(text())) and (normalize-space() = '')">
-        [xslqual] Don't use empty content for instructions like 'xsl:for-each' 'xsl:if' 'xsl:when' etc.
+        This &lt;<value-of select="name()"/>&gt; instruction is empty.
       </report>
       </rule>
       <rule context="xsl:function[(:ignore function library stylesheet:)       count(//xsl:template[@match][(@mode, '#default')[1] = '#default']) != 0]">
          <sonar:name rel="xslqual-UnusedFunction">Unused fonctions should be avoided</sonar:name>
          <sonar:description rel="xslqual-UnusedFunction" >TODO except library</sonar:description>
-         <assert id="xslqual-UnusedFunction"
+         <assert id="xslqual-UnusedFunction" sonar:tags="xslqual"
                  role="warning"
                  test="xslq:function-is-called-within-its-scope(.)">
-        [xslqual] Function <value-of select="@name"/> is unused in the stylesheet
+        Function <value-of select="@name"/> is unused in the stylesheet
       </assert>
          <!--<report id="xslqual-UnusedFunction" role="warning"
         test="not(some $x in //(xsl:template/@match | xsl:*/@select | xsl:when/@test) satisfies contains($x, @name)) 
@@ -132,42 +133,43 @@ CHANGELOG :
       </report>-->
          <sonar:name rel="xslqual-FunctionComplexity">Complex functions should be modularized</sonar:name>
          <sonar:description rel="xslqual-FunctionComplexity" >TODO desc ?</sonar:description>
-         <report id="xslqual-FunctionComplexity"
+         <report id="xslqual-FunctionComplexity" sonar:tags="xslqual"
                  role="info"
                  test="count(.//xsl:*) &gt; 50">
-        [xslqual] Function's size/complexity is high. There is need for refactoring the code.
+            The size/complexity  of function <value-of select="@name"/> is high. There is need for refactoring the code.
       </report>
       </rule>
       <rule context="xsl:template">
          <sonar:name rel="xslqual-UnusedNamedTemplate">Named templates should be used in the stylesheet</sonar:name>
-         <report id="xslqual-UnusedNamedTemplate"
+         <report id="xslqual-UnusedNamedTemplate" sonar:tags="xslqual"
                  role="warning"
                  test="@name and not(@match) and not(//xsl:call-template/@name = @name)">
-        [xslqual] Named template in unused the stylesheet
+         Named template <value-of select="@name"/> in unused in the stylesheet
       </report>
          <sonar:name rel="xslqual-TemplateComplexity">Complex templates should be modularized</sonar:name>
          <sonar:description rel="xslqual-TemplateComplexity" >TODO desc ?</sonar:description>
-         <report id="xslqual-TemplateComplexity"
+         <report id="xslqual-TemplateComplexity" sonar:tags="xslqual"
                  role="info"
                  test="count(.//xsl:*) &gt; 50">
-        [xslqual] Template's size/complexity is high. There is need for refactoring the code.
+            The size/complexity of template <value-of select="@name"/> is high. There is need for refactoring the code.
       </report>
       </rule>
       <rule context="xsl:element">
          <sonar:name rel="xslqual-NotCreatingElementCorrectly">Direct element creation should be prefered to xsl:element where possible</sonar:name>
          <sonar:description rel="xslqual-NotCreatingElementCorrectly" >TODO desc obligatoire !!</sonar:description>
-         <report id="xslqual-NotCreatingElementCorrectly"
+         <report id="xslqual-NotCreatingElementCorrectly" sonar:tags="xslqual"
                  test="not(contains(@name, '$') or (contains(@name, '(') and contains(@name, ')')) or          (contains(@name, '{') and contains(@name, '}')))">
-        [xslqual] Creating an element node using the xsl:element instruction when could have been possible directly
+        Create element node &lt;<value-of select="@name"/>&gt; directly instead of using the &lt;xsl:element&gt; instruction.
       </report>
       </rule>
       <rule context="xsl:apply-templates">
          <!-- TODO not code smell, bug ! -->
+         <!-- TODO, possible de récupérer $var dans le message ? -->
          <sonar:name rel="xslqual-AreYouConfusingVariableAndNode">Variable references should not be confused whith node refenrences</sonar:name>
          <sonar:description rel="xslqual-AreYouConfusingVariableAndNode" >TODO desc obligatoire !!</sonar:description>
-         <report id="xslqual-AreYouConfusingVariableAndNode"
+         <report id="xslqual-AreYouConfusingVariableAndNode" sonar:tags="xslqual"
                  test="some $var in ancestor::xsl:template[1]//xsl:variable satisfies          (($var &lt;&lt; .) and starts-with(@select, $var/@name))">
-        [xslqual] You might be confusing a variable reference with a node reference
+        You might be confusing a variable reference with a node reference
       </report>
       </rule>
       <rule context="@*">
@@ -175,48 +177,58 @@ CHANGELOG :
          <sonar:name rel="xslqual-DontUseDoubleSlashOperatorNearRoot">Double-Slash operator should be avoided near root</sonar:name>
          <report id="xslqual-DontUseDoubleSlashOperatorNearRoot"
                  test="local-name(.)= ('match', 'select') and (not(matches(., '^''.*''$')))         and starts-with(., '//')"
-                 role="warning">
-        [xslqual] Avoid using the operator // near the root of a large tree
+                 role="warning"
+                 sonar:tags="xslqual">
+        Avoid using the operator // near the root of a large tree
       </report>
          <sonar:name rel="xslqual-DontUseDoubleSlashOperator">Double-Slash operator should be avoided</sonar:name>
          <report id="xslqual-DontUseDoubleSlashOperator"
                  test="local-name(.)= ('match', 'select') and (not(matches(., '^''.*''$')))         and not(starts-with(., '//')) and contains(., '//')"
-                 role="info">
-        [xslqual] Avoid using the operator // in XPath expressions
+                 role="info"
+                 sonar:tags="xslqual">
+        Avoid using the operator // in XPath expressions
       </report>
          <sonar:name rel="xslqual-UsingNameOrLocalNameFunction">The choice of using "name()" or "local-name()" should be made with care</sonar:name>
          <sonar:description rel="xslqual-UsingNameOrLocalNameFunction" >TODO desc  !</sonar:description>
+         <let name="name-is-used" value="contains(., 'name(')"/>
+         <let name="actual-name-statement" value="if($name-is-used) then 'name()' else 'local-name()'" />
+         <let name="candidate-name-statement" value="if($name-is-used) then 'local-name()' else 'name()'" />
          <report id="xslqual-UsingNameOrLocalNameFunction"
                  test="contains(., 'name(') or contains(., 'local-name(')"
-                 role="info">
-        [xslqual] Using name() function when local-name() could be appropriate (and vice-versa)
+                 role="info"
+                 sonar:tags="xslqual">
+        Consider using <value-of select="$candidate-name-statement"/> function instead of <value-of select="$actual-name-statement"/> if appropriate.
       </report>
-         <sonar:name rel="xslqual-IncorrectUseOfBooleanConstants">TODO xslqual-IncorrectUseOfBooleanConstants</sonar:name>
+         <sonar:name rel="xslqual-IncorrectUseOfBooleanConstants">Boolean constans "true()" or "false()" should be prefered to litteral strings</sonar:name>
          <sonar:description rel="TODO" >TODO desc  !</sonar:description>
          <report id="xslqual-IncorrectUseOfBooleanConstants"
+                 sonar:tags="xslqual"
                  role="info"
                  test="local-name(.)= ('match', 'select') and not(parent::xsl:attribute)         and ((contains(., 'true') and not(contains(., 'true()'))) or (contains(., 'false') and not(contains(., 'false()'))))">
-        [xslqual] Incorrectly using the boolean constants as 'true' or 'false'
+        Use "true()" or "false()" instead of string litterals "true" or "false"
       </report>
-         <sonar:name rel="xslqual-UsingNamespaceAxis">TODO xslqual-UsingNamespaceAxis</sonar:name>
+         <sonar:name rel="xslqual-UsingNamespaceAxis">Usage of the deprecated "namescpace::" axis should be avoided</sonar:name>
          <sonar:description rel="TODO" >TODO desc  !</sonar:description>
          <report id="xslqual-UsingNamespaceAxis"
+                 sonar:tags="xslqual"
                  test="/xsl:stylesheet/@version = ('2.0', '3.0') and local-name(.)= ('match', 'select') and contains(., 'namespace::')">
-        [xslqual] Using the deprecated namespace axis, when working in XSLT <value-of select="/*/@version"/> mode
+        Do not use the deprecated namespace axis, when working in XSLT <value-of select="/*/@version"/> mode
       </report>
          <!-- TODO cf. Matthieu -->
          <sonar:name rel="xslqual-CanUseAbbreviatedAxisSpecifier">TODO xslqual-CanUseAbbreviatedAxisSpecifier</sonar:name>
          <sonar:description rel="xslqual-CanUseAbbreviatedAxisSpecifier" >TODO desc  !</sonar:description>
          <report id="xslqual-CanUseAbbreviatedAxisSpecifier"
                  test="local-name(.) = ('match', 'select') and contains(., 'child::') or contains(., 'attribute::') or contains(., 'parent::node()')"
-                 role="info">
+                 role="info"
+                 sonar:tags="xslqual">
         [xslqual] Using the lengthy axis specifiers like child::, attribute:: or parent::node()
       </report>
          <!-- TODO cf. Matthieu -->
          <sonar:name rel="xslqual-UsingDisableOutputEscaping">TODO xslqual-UsingDisableOutputEscaping</sonar:name>
          <sonar:description rel="TODO" >TODO desc  !</sonar:description>
          <report id="xslqual-UsingDisableOutputEscaping"
-                 test="local-name(.) = 'disable-output-escaping' and . = 'yes'">
+                 test="local-name(.) = 'disable-output-escaping' and . = 'yes'"
+                 sonar:tags="xslqual">
         [xslqual] Have set the disable-output-escaping attribute to 'yes'. Please relook at the stylesheet logic.
       </report>
       </rule>
