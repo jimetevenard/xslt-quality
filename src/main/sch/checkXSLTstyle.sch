@@ -5,7 +5,7 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
   xmlns:saxon="http://saxon.sf.net/"
-  queryBinding="xslt3" 
+  queryBinding="xslt2" 
   id="checkXSLTstyle.sch"
   >
   
