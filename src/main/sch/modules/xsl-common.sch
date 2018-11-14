@@ -5,6 +5,7 @@
   xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
   xmlns:saxon="http://saxon.sf.net/"
   xmlns:sonar="http://www.jimetevenard.com/ns/sonar-xslt"
+  xmlns:html="http://www.w3.org/1999/xhtml"
   queryBinding="xslt3"
   id="xsl-common.sch">
   
@@ -41,10 +42,93 @@
   <!--              MAIN                 -->
   <!--====================================-->
   
+  <sonar:description rel="exemple-description">
+   <html:p>Ceci est un exemple de descrption.<html:br />Toutes les règles devraient être documentées.</html:p>
+    
+    <html:p>Le formalisme des descriptions est décrit <html:a href="https://docs.sonarqube.org/display/DEV/Coding+Rule+Guidelines">sur cette page</html:a>.</html:p>
+    
+    <html:blockquote>
+      <html:p>Un paragraphe dans une citation.</html:p>
+    </html:blockquote>
+    <html:h2>Noncompliant Code Example</html:h2>
+    
+    <html:p>Ce qui suit ne doit pas être fait...</html:p>
+    
+    <html:pre>
+      &lt;xsl:template match="node() | @*"&gt;
+        &lt;xsl:copy&gt;
+          &lt;xsl:apply-templates select="node() | @*" /&gt;
+        &lt;/xsl:copy&gt;
+      &lt;/xsl:template&gt;
+    </html:pre>
+    
+    <html:h2>Compliant Solution</html:h2>
+    
+    <html:p>Ceci en revanche, doit être fait...</html:p>
+    
+    <html:pre>
+      &lt;xsl:template match="node() | @*"&gt;
+         &lt;xsl:copy&gt;
+            &lt;xsl:apply-templates select="node() | @*" /&gt;
+         &lt;/xsl:copy&gt;
+      &lt;/xsl:template&gt;
+    </html:pre>
+    
+    <html:h2>See</html:h2>
+    
+    <html:ul>
+      <html:li>Ce lien là : <html:a href="http://jimetevenard.com/">informations</html:a></html:li>
+      <html:li>Ce lien là : <html:a href="http://jimetevenard.com/">D'autre infos</html:a></html:li>
+    </html:ul>
+    
+  </sonar:description>
+  
   <pattern id="xslt-quality_common">
     <rule context="xsl:for-each">
       <sonar:name rel="xslt-quality_avoid-for-each">"xsl:apply-templates" should be prefered to "xsl:for-each"</sonar:name>
-      <sonar:description rel="xslt-quality_avoid-for-each">TODO description</sonar:description>
+      <sonar:description rel="xslt-quality_avoid-for-each">
+        <html:h2>TODO description à rédiger</html:h2>
+        
+        <html:p>Ceci est un exemple de descrption.<html:br />Toutes les règles devraient être documentées.</html:p>
+        
+        <html:p>Le formalisme des descriptions est décrit <html:a href="https://docs.sonarqube.org/display/DEV/Coding+Rule+Guidelines">sur cette page</html:a>.</html:p>
+        
+        <html:blockquote>
+          <html:p>Un paragraphe dans une citation.</html:p>
+        </html:blockquote>
+        
+        <html:h2>Noncompliant Code Example</html:h2>
+        
+        <html:p>Ce qui suit ne doit pas être fait...</html:p>
+        
+        <html:pre>
+          &lt;xsl:template match="node() | @*"&gt;
+          &lt;xsl:copy&gt;
+          &lt;xsl:apply-templates select="node() | @*" /&gt;
+          &lt;/xsl:copy&gt;
+          &lt;/xsl:template&gt;
+        </html:pre>
+        
+        <html:h2>Compliant Solution</html:h2>
+        
+        <html:p>Ceci en revanche, doit être fait...</html:p>
+        
+        <html:pre>
+          &lt;xsl:template match="node() | @*"&gt;
+          &lt;xsl:copy&gt;
+          &lt;xsl:apply-templates select="node() | @*" /&gt;
+          &lt;/xsl:copy&gt;
+          &lt;/xsl:template&gt;
+        </html:pre>
+        
+        <html:h2>See</html:h2>
+        
+        <html:ul>
+          <html:li>Ce lien là : <html:a href="http://jimetevenard.com/">informations</html:a></html:li>
+          <html:li>Ce lien là : <html:a href="http://jimetevenard.com/">D'autre infos</html:a></html:li>
+        </html:ul>
+        
+      </sonar:description>
       <report test="ancestor::xsl:template          and not(starts-with(@select, '$'))         and not(starts-with(@select, 'tokenize('))         and not(starts-with(@select, 'distinct-values('))         and not(matches(@select, '\d'))"
         role="warning"
         id="xslt-quality_avoid-for-each"   
