@@ -19,7 +19,7 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>labo.jim</groupId>
+				<groupId>org.sonarxsl</groupId>
 				<artifactId>sonar-schematron-packagin-plugin</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 				<executions>
